@@ -1,19 +1,40 @@
 "A Conversion python program"
 
-def kg_to_lbs(float):
-    "1kg = 2.20462lbs"
-    conversion = float * 2.20462
-    response = f"{conversion:.2f} lbs"
+def kg_to_lbs(number, measurement):
+    """1kg = 2.20462lbs, multiply in this variation"""
+    response = "Error"
+    if measurement == 'kg' and is_valid_number(string = number):
+        digit = float(number)
+        conversion = digit * 2.20462
+        response = f"{conversion:.2f} lbs"
     return response
 
-def lbs_to_kg(float):
-    return
+def lbs_to_kg(number, measurement):
+    """1kg = 2.20462lbs, divide in this variation"""
+    response = "Error"
+    if measurement == "lbs" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = digit / 2.20462
+        response = f"{conversion:.2f} kg"
+    return response
 
-def f_to_c(float):
-    return
+def f_to_c(number, measurement):
+    """Celcius = (F - 32) * 5/9"""
+    response = "Error"
+    if measurement == "f" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = (digit - 32) * (5/9)
+        response = f"{conversion:.2f} c"
+    return response
 
-def c_to_f(float):
-    return
+def c_to_f(number, measurement):
+    """Fahrenheit = (C * 5/9) + 32 """
+    response = "Error"
+    if measurement == "c" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = (digit * (5/9)) + 32
+        response = f"{conversion:.2f} f"
+    return response
 
 def ft_to_m(float):
     return
@@ -27,6 +48,19 @@ def ac_to_sqft(float):
 def sqft_to_ac(float):
     return
 
+def is_valid_number(string):
+    """Checks only 1 decimal, decimal at start, and only digits"""
+    if string.count('.') > 1:
+        return False 
+    if string == '' or (string[0] == '-' and string[1:] == ''):
+        return False 
+    for i, char in enumerate(string):
+        if char == '.':
+            if i == 0 or i == len(string) - 1:
+                return False  
+        elif not char.isdigit() and not (char == '-' and i == 0):
+            return False  
+    return True
 
 if __name__ == "__main__":
     """Requesting the value then using a case-switch to choose function"""
@@ -52,17 +86,17 @@ if __name__ == "__main__":
     }
     input_to_convert = input("Two decimal value with a space then the desired units in lowercase: ")
     inputs = input_to_convert.split()
-    number = float(inputs[0])
     measurement = str(inputs[1])
-    if len(inputs) == 2:
+    if len(inputs) == 2 and is_valid_number(string = inputs[0]):
         key = 0
         flag = False
-        while key < 8 and flag == False :
+        while key < 8 and flag == False:
             if conversion_dict[key] == measurement:
-                flag == True 
+                flag = True 
+                break
             key+= 1
         if flag:
-            output = function_dict[key](float = number)
+            output = function_dict[key](number = inputs[0], measurement = conversion_dict[key])
             print(output)
         else:
             print("Incorrect formatting")
