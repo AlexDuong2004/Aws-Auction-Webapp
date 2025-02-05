@@ -108,7 +108,7 @@ if __name__ == "__main__":
         6: ac_to_sqft,
         7: sqft_to_ac
     }
-    input_to_convert = input("Two decimal value with a space then the desired units in lowercase: ")
+    input_to_convert = input("Two decimal value with a space then the desired units in lowercase and put 0 before decimal point: ")
     inputs = input_to_convert.split()
     measurement = str(inputs[1])
     if len(inputs) == 2 and is_valid_number(string = inputs[0]):
