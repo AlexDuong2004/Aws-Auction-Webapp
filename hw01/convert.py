@@ -14,7 +14,7 @@ def lbs_to_kg(number, measurement):
     response = "Error"
     if measurement == "lbs" and is_valid_number(string = number):
         digit = float(number)
-        conversion = digit / 2.20462
+        conversion = digit * (1 / 2.20462)
         response = f"{conversion:.2f} kg"
     return response
 
@@ -50,7 +50,7 @@ def m_to_ft(number, measurement):
     response = "Error"
     if measurement == "m" and is_valid_number(string = number):
         digit = float(number)
-        conversion = (digit / .304)
+        conversion = (digit * (1 /.304))
         response = f"{conversion:.2f} ft"
     return response
 
