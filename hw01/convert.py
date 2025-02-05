@@ -54,11 +54,23 @@ def m_to_ft(number, measurement):
         response = f"{conversion:.2f} ft"
     return response
 
-def ac_to_sqft(float):
-    return
+def ac_to_sqft(number, measurement):
+    """sqft = ac * 43560"""
+    response = "Error"
+    if measurement == "ac" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = (digit * 43560)
+        response = f"{conversion:.2f} sqft"
+    return response
 
-def sqft_to_ac(float):
-    return
+def sqft_to_ac(number, measurement):
+    """ac = sqft / 43560"""
+    response = "Error"
+    if measurement == "sqft" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = (digit / 43560)
+        response = f"{conversion:.2f} ac"
+    return response
 
 def is_valid_number(string):
     """Checks only 1 decimal, decimal at start, and only digits"""
