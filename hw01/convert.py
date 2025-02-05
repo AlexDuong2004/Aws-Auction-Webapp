@@ -36,11 +36,23 @@ def c_to_f(number, measurement):
         response = f"{conversion:.2f} f"
     return response
 
-def ft_to_m(float):
-    return
+def ft_to_m(number, measurement):
+    """Meter = ft * .304"""
+    response = "Error"
+    if measurement == "ft" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = (digit * .304)
+        response = f"{conversion:.2f} m"
+    return response
 
-def m_to_ft(float):
-    return
+def m_to_ft(number, measurement):
+    """ft = meter / .304"""
+    response = "Error"
+    if measurement == "m" and is_valid_number(string = number):
+        digit = float(number)
+        conversion = (digit / .304)
+        response = f"{conversion:.2f} ft"
+    return response
 
 def ac_to_sqft(float):
     return
