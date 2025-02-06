@@ -28,11 +28,11 @@ def f_to_c(number, measurement):
     return response
 
 def c_to_f(number, measurement):
-    """Fahrenheit = (C * 5/9) + 32 """
+    """Fahrenheit = (C * 9/5) + 32 """
     response = "Error"
     if measurement == "c" and is_valid_number(string = number):
         digit = float(number)
-        conversion = (digit * (5/9)) + 32
+        conversion = (digit * (9/5)) + 32
         response = f"{conversion:.2f} f"
     return response
 
@@ -41,7 +41,7 @@ def ft_to_m(number, measurement):
     response = "Error"
     if measurement == "ft" and is_valid_number(string = number):
         digit = float(number)
-        conversion = (digit * .304)
+        conversion = digit * .304
         response = f"{conversion:.2f} m"
     return response
 
@@ -50,7 +50,7 @@ def m_to_ft(number, measurement):
     response = "Error"
     if measurement == "m" and is_valid_number(string = number):
         digit = float(number)
-        conversion = (digit * (1 /.304))
+        conversion = digit * (1 /.304)
         response = f"{conversion:.2f} ft"
     return response
 
@@ -59,7 +59,7 @@ def ac_to_sqft(number, measurement):
     response = "Error"
     if measurement == "ac" and is_valid_number(string = number):
         digit = float(number)
-        conversion = (digit * 43560)
+        conversion = digit * 43560
         response = f"{conversion:.2f} sqft"
     return response
 
@@ -68,26 +68,25 @@ def sqft_to_ac(number, measurement):
     response = "Error"
     if measurement == "sqft" and is_valid_number(string = number):
         digit = float(number)
-        conversion = (digit / 43560)
+        conversion = digit / 43560
         response = f"{conversion:.2f} ac"
     return response
 
 def is_valid_number(string):
     """Checks only 1 decimal, decimal at start, and only digits"""
     if string.count('.') > 1:
-        return False 
+        return False
     if string == '' or (string[0] == '-' and string[1:] == ''):
-        return False 
+        return False
     for i, char in enumerate(string):
         if char == '.':
-            if i == 0 or i == len(string) - 1:
-                return False  
+            if i in (0, len(string) - 1):
+                return False
         elif not char.isdigit() and not (char == '-' and i == 0):
-            return False  
+            return False
     return True
 
 if __name__ == "__main__":
-    """Requesting the value then using a case-switch to choose function"""
     conversion_dict = {
         0: "kg",
         1: "lbs",
@@ -108,19 +107,19 @@ if __name__ == "__main__":
         6: ac_to_sqft,
         7: sqft_to_ac
     }
-    input_to_convert = input("Two decimal value with a space then the desired units in lowercase and put 0 before decimal point: ")
+    input_to_convert = input("Insert a numerical value then a space then the measurement: ")
     inputs = input_to_convert.split()
-    measurement = str(inputs[1])
+    UNIT = str(inputs[1])
     if len(inputs) == 2 and is_valid_number(string = inputs[0]):
-        key = 0
-        flag = False
-        while key < 8 and flag == False:
-            if conversion_dict[key] == measurement:
-                flag = True 
+        KEY = 0
+        FLAG = False
+        while KEY < 8 and FLAG is False:
+            if conversion_dict[KEY] == UNIT:
+                FLAG = True
                 break
-            key+= 1
-        if flag:
-            output = function_dict[key](number = inputs[0], measurement = conversion_dict[key])
+            KEY+= 1
+        if FLAG:
+            output = function_dict[KEY](number = inputs[0], measurement = conversion_dict[KEY])
             print(output)
         else:
             print("Incorrect formatting")
