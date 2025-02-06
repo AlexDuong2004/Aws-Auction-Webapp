@@ -1,4 +1,4 @@
-"A Conversion python program for hw01 final edit"
+"A Conversion python program with basic measurements"
 
 def kg_to_lbs(number, measurement):
     """1kg = 2.20462lbs, multiply in this variation"""
