@@ -3,9 +3,10 @@ name: Python package
 on: 
   push:
     branches:
-      -main
-      -feature-hw01
-    paths: -hw01/**
+      - main
+      - feature-hw01
+    paths: 
+      - hw01/**
 
 jobs:
   build:
