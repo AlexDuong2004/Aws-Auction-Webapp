@@ -1,0 +1,4 @@
+.pytest_cache/
+pylint/
+*.pylintrc
+__pycache__/
