@@ -64,6 +64,58 @@ def download_file(bucket, file_path):
     s3.download_file(bucket, selected_object, file_path)
     return 
 
+def pre_signed_url(bucket):
+    """Generates a presigned url for a s3 object"""
+    s3_client = boto3.client('s3')
+    expiration = 3600
+    available_objects = list_objects(bucket)
+    if not available_objects:
+        print("No files found in the bucket.")
+        return 
+    while True:
+        selected_object = input("Select a valid object:").strip()
+        if selected_object in available_objects:
+            break
+        print("Incorrect object please select a valid one: ")
+        print(available_objects)
+    try:
+        response = s3_client.generate_presigned_url('get_object', 
+                                                    Params={'Bucket': bucket,
+                                                            'Key': selected_object},
+                                                            ExpiresIn= expiration)
+    except ClientError as e:
+        logging.error(e)
+        return None
+    
+    return response
+
+def list_object_versions(bucket):
+    """Retrieve all versions of a specific object in an S3 bucket."""
+    s3 = boto3.client('s3')
+    available_objects = list_objects(bucket)
+    if not available_objects:
+        print("No files found in the bucket.")
+        return 
+    while True:
+        selected_object = input("Select a valid object:").strip()
+        if selected_object in available_objects:
+            break
+        print("Incorrect object please select a valid one: ")
+        print(available_objects)
+
+    try:
+        response = s3.list_object_versions(Bucket=bucket, Prefix=selected_object)
+
+        if "Versions" not in response:
+            print("No version found")
+            return []
+
+        return response["Versions"]  
+
+    except ClientError as e:
+        print(f"Error retrieving object versions: {e}")
+        return []
+        
 
 if __name__ == "__main__":
     current_bucket = None  
@@ -71,7 +123,8 @@ if __name__ == "__main__":
     while True:
         menu_input = input(
             "Select 'q' to quit, 's' to select a bucket, 'u' to upload to a bucket, "
-            "'lo' to list objects in a bucket, 'd' to download: "
+            "'lo' to list objects in a bucket, 'd' to download, 'psu' for a presigned "
+            "url :"
         ).strip().lower()
 
         match menu_input:
@@ -104,6 +157,20 @@ if __name__ == "__main__":
                 else:
                     path_file = input("Enter the path to your file: ").strip()
                     download_file(current_bucket, path_file)
+
+            case "psu":
+                if current_bucket is None:
+                    print("No bucket selected, please select a bucket.")
+                else: 
+                    url = pre_signed_url(current_bucket)
+                    print(f"Your url is: {url}")
+
+            case "v":
+                if current_bucket is None:
+                    print("No bucket selected, please select a bucket.")
+                else: 
+                    version_info = list_object_versions(current_bucket)
+                    print(version_info)
 
             case _:  
                 print("Invalid option, please try again.")
