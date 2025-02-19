@@ -1,3 +1,4 @@
+"""Does various commands for a s3 bucket that is prompted through command line"""
 import logging
 import boto3
 from botocore.exceptions import ClientError
@@ -115,7 +116,22 @@ def list_object_versions(bucket):
     except ClientError as e:
         print(f"Error retrieving object versions: {e}")
         return []
-        
+    
+def delete_object(bucket):
+    """Deletes one object from """
+    s3 = boto3.client('s3')
+    available_objects = list_objects(bucket)
+    if not available_objects:
+        print("No files found in the bucket.")
+        return 
+    while True:
+        selected_object = input("Select a valid object:").strip()
+        if selected_object in available_objects:
+            break
+        print("Incorrect object please select a valid one: ")
+        print(available_objects)
+    s3.delete_object(Bucket=bucket, key=selected_object)
+    return
 
 if __name__ == "__main__":
     current_bucket = None  
@@ -124,7 +140,7 @@ if __name__ == "__main__":
         menu_input = input(
             "Select 'q' to quit, 's' to select a bucket, 'u' to upload to a bucket, "
             "'lo' to list objects in a bucket, 'd' to download, 'psu' for a presigned "
-            "url :"
+            "url, 'del' to delete an object :"
         ).strip().lower()
 
         match menu_input:
@@ -171,6 +187,12 @@ if __name__ == "__main__":
                 else: 
                     version_info = list_object_versions(current_bucket)
                     print(version_info)
+
+            case "del":
+                if current_bucket is None:
+                    print("No bucket selected, please select a bucket.")
+                else: 
+                    delete_object(current_bucket)
 
             case _:  
                 print("Invalid option, please try again.")
