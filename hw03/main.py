@@ -52,35 +52,47 @@ def download_file(bucket, file_path):
     """Downloads an object from a particular bucket"""
     config = 
 
+    return
 
 if __name__ == "__main__":
     current_bucket = None  
-    while True:
-        menu_input = input("Select 'q' to quit, 's' to select a bucket,'u' to upload to a bucket, 'lo' to list objects in a bucket, 'd' to download: ").strip().lower()
-        if menu_input == "q":
-            break
-        elif menu_input == "s":
-            current_bucket, bucket_list = select_bucket()
-            print(f"Current bucket set to: {current_bucket}")
-        elif menu_input == "u":
-            if current_bucket is None:
-                print("No bucket selected please select a bucket")
-            else:
-                file_path = input("Enter the path to your file: ").strip()
-                name_of_file = input("Enter a name for the file or press enter to skip: ").strip()
-                upload_file(file_path, current_bucket, name_of_file)
-        elif menu_input == "lo":
-            if current_bucket is None:
-                print("No bucket selected please select a bucket")
-            else:
-                object_list = list_objects(current_bucket)
-                print(object_list)
-                
-        elif menu_input == "d":
-            if current_bucket is None:
-                print("No bucket selected please select a bucket")
-            else:
-                path_file = input("Enter the path to your file: ").strip()
-                download_file(current_bucket, path_file)
 
+    while True:
+        menu_input = input(
+            "Select 'q' to quit, 's' to select a bucket, 'u' to upload to a bucket, "
+            "'lo' to list objects in a bucket, 'd' to download: "
+        ).strip().lower()
+
+        match menu_input:
+            case "q":
+                break
+
+            case "s":
+                current_bucket, bucket_list = select_bucket()
+                print(f"Current bucket set to: {current_bucket}")
+
+            case "u":
+                if current_bucket is None:
+                    print("No bucket selected, please select a bucket.")
+                else:
+                    file_path = input("Enter the path to your file: ").strip()
+                    name_of_file = input("Enter a name for the file or press enter to skip: ").strip()
+                    upload_file(file_path, current_bucket, name_of_file)
+
+            case "lo":
+                if current_bucket is None:
+                    print("No bucket selected, please select a bucket.")
+                else:
+                    object_list = list_objects(current_bucket)
+                    print(object_list)
+
+            case "d":
+                if current_bucket is None:
+                    print("No bucket selected, please select a bucket.")
+                else:
+                    path_file = input("Enter the path to your file: ").strip()
+                    download_file(current_bucket, path_file)
+
+            case _:  
+                print("Invalid option, please try again.")
 
