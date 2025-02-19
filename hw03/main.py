@@ -39,10 +39,10 @@ def list_objects(bucket):
     s3 = boto3.client("s3")
     try:
         query = s3.list_objects_v2(Bucket=bucket)
+        if "Contents" not in query:
+            return []
         objects = query.get("Contents", [])
-
         object_keys = [obj["Key"] for obj in objects] if objects else []
-        
         return object_keys
     except ClientError as e:
         logging.error(e)
@@ -50,9 +50,20 @@ def list_objects(bucket):
 
 def download_file(bucket, file_path):
     """Downloads an object from a particular bucket"""
-    config = 
+    s3 = boto3.client('s3')
+    available_objects = list_objects(bucket)
+    if not available_objects:
+        print("No files found in the bucket.")
+        return 
+    while True:
+        selected_object = input("Select a valid object:").strip()
+        if selected_object in available_objects:
+            break
+        print("Incorrect object please select a valid one: ")
+        print(available_objects)
+    s3.download_file(bucket, selected_object, file_path)
+    return 
 
-    return
 
 if __name__ == "__main__":
     current_bucket = None  
@@ -69,7 +80,8 @@ if __name__ == "__main__":
 
             case "s":
                 current_bucket, bucket_list = select_bucket()
-                print(f"Current bucket set to: {current_bucket}")
+                if current_bucket:
+                    print(f"Current bucket set to: {current_bucket}")
 
             case "u":
                 if current_bucket is None:
