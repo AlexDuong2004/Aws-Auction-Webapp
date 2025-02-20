@@ -20,7 +20,7 @@ def select_bucket():
     while True:
         selected_bucket = input("Type the bucket you'd like to use: ").strip()
         if selected_bucket in bucket_names:
-            return selected_bucket, bucket_list
+            return selected_bucket, list_b
         print("Invalid bucket name. Please enter a valid bucket from the list.")
 
 def upload_file(file_name, bucket, object_name=None):
@@ -148,6 +148,7 @@ if __name__ == "__main__":
             case "s":
                 CURRENT_BUCKET, bucket_list = select_bucket()
                 if CURRENT_BUCKET:
+                    print(f"Bucket selections were: {bucket_list}")
                     print(f"Current bucket set to: {CURRENT_BUCKET}")
 
             case "u":
