@@ -9,9 +9,6 @@ def test_listing_buckets():
 
 def test_list_bucket_contents():
     """Displays the contents of the selected bucket, made for githubactions pytest"""
-    repo_root = os.getcwd()
-    file_path1 = os.path.join(repo_root, "hw03", "pytest_files", "dummyfile1.txt")
-    file_path2 = os.path.join(repo_root, "hw03", "pytest_files", "dummyfile2.txt")
     assert list_objects('hw03-ald21039-2') == []
     assert list_objects('hw03-ald21039-3') == []
     assert list_objects('hw03-ald21039-1') == []
