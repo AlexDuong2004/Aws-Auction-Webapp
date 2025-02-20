@@ -4,9 +4,8 @@ import os
 import boto3
 from botocore.exceptions import ClientError
 
-def select_bucket():
-    """Prompts the user to select a valid S3 bucket and the list of buckets."""
-    list_b = []
+def bucket_listing():
+    """Lists the buckets you are able to use"""
     s3 = boto3.client("s3")
     response = s3.list_buckets()
     bucket_names = {bucket["Name"] for bucket in response.get("Buckets", [])}
@@ -15,12 +14,21 @@ def select_bucket():
         return None
     print("Existing buckets:")
     for name in bucket_names:
-        list_b.append(name)
         print(f"- {name}")
+    return None
+
+def select_bucket(bucket_selected):
+    """Prompts the user to select a valid S3 bucket and the list of buckets."""
+    list_b = []
+    s3 = boto3.client("s3")
+    response = s3.list_buckets()
+    bucket_names = {bucket["Name"] for bucket in response.get("Buckets", [])}
+    if not bucket_names:
+        print("No available buckets found.")
+        return None
     while True:
-        selected_bucket = input("Type the bucket you'd like to use: ").strip()
-        if selected_bucket in bucket_names:
-            return selected_bucket, list_b
+        if bucket_selected in bucket_names:
+            return bucket_selected
         print("Invalid bucket name. Please enter a valid bucket from the list.")
 
 def upload_file(file_name, bucket, object_name=None):
@@ -138,7 +146,7 @@ if __name__ == "__main__":
         menu_input = input(
             "Select 'q' to quit, 's' to select a bucket, 'u' to upload to a bucket, "
             "'lo' to list objects in a bucket, 'd' to download, 'psu' for a presigned "
-            "url, 'del' to delete an object :"
+            "url, 'del' to delete an object, 'l' to list the buckets: "
         ).strip().lower()
 
         match menu_input:
@@ -146,9 +154,9 @@ if __name__ == "__main__":
                 break
 
             case "s":
-                CURRENT_BUCKET, bucket_list = select_bucket()
+                selection = input("Write the bucket you want selected: ")
+                CURRENT_BUCKET = select_bucket(selection)
                 if CURRENT_BUCKET:
-                    print(f"Bucket selections were: {bucket_list}")
                     print(f"Current bucket set to: {CURRENT_BUCKET}")
 
             case "u":
@@ -192,6 +200,9 @@ if __name__ == "__main__":
                     print("No bucket selected, please select a bucket.")
                 else:
                     delete_object(CURRENT_BUCKET)
+
+            case "l":
+                bucket_listing()
 
             case _:
                 print("Invalid option, please try again.")
