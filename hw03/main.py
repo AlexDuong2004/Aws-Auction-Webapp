@@ -186,16 +186,16 @@ if __name__ == "__main__":
                 if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
                 else:
-                    x = input("select your object")
-                    version_info = list_object_versions(CURRENT_BUCKET, x)
+                    selection = input("select your object")
+                    version_info = list_object_versions(CURRENT_BUCKET, selection)
                     print(version_info)
 
             case "del":
                 if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
                 else:
-                    y = input("select your object")
-                    delete_object(CURRENT_BUCKET, y)
+                    selection1 = input("select your object")
+                    delete_object(CURRENT_BUCKET, selection1)
 
             case "l":
                 bucket_listing()
