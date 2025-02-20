@@ -25,10 +25,10 @@ def select_bucket(bucket_selected):
     if not bucket_names:
         print("No available buckets found.")
         return None
-    while True:
-        if bucket_selected in bucket_names:
-            return bucket_selected
-        print("Invalid bucket name. Please enter a valid bucket from the list.")
+    if bucket_selected in bucket_names:
+        return bucket_selected
+    print(f"Invalid bucket name. Please select a valid bucket from the list: {bucket_names}")
+    return None
 
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket."""
@@ -76,20 +76,18 @@ def pre_signed_url(bucket, obj_sel):
     if not available_objects:
         print("No files found in the bucket.")
         return False
-    while True:
-        if obj_sel in available_objects:
-            break
-        print("Incorrect object please select a valid one: ")
-        print(available_objects)
-    try:
-        response = s3_client.generate_presigned_url('get_object',
-                                                    Params={'Bucket': bucket,
-                                                            'Key': obj_sel},
-                                                            ExpiresIn= expiration)
-    except ClientError as e:
-        logging.error(e)
-        return None
-    return response
+    if obj_sel in available_objects:
+        try:
+            response = s3_client.generate_presigned_url('get_object',
+                                                        Params={'Bucket': bucket,
+                                                                'Key': obj_sel},
+                                                                ExpiresIn=expiration)
+            return response
+        except ClientError as e:
+            logging.error(e)
+            return None
+    print(f"Incorrect object selected. Available objects: {available_objects}")
+    return None
 
 def list_object_versions(bucket, sel_object):
     """Retrieve all versions of a specific object in an S3 bucket."""
@@ -98,24 +96,20 @@ def list_object_versions(bucket, sel_object):
     if not available_objects:
         print("No files found in the bucket.")
         return False
-    while True:
-        if sel_object in available_objects:
-            break
-        print("Incorrect object please select a valid one: ")
-        print(available_objects)
+    if sel_object in available_objects:
+        try:
+            response = s3.list_object_versions(Bucket=bucket, Prefix=sel_object)
 
-    try:
-        response = s3.list_object_versions(Bucket=bucket, Prefix=sel_object)
+            if "Versions" not in response:
+                print("No versions found")
+                return []
 
-        if "Versions" not in response:
-            print("No version found")
+            return response["Versions"]
+        except ClientError as e:
+            print(f"Error retrieving object versions: {e}")
             return []
-
-        return response["Versions"]
-
-    except ClientError as e:
-        print(f"Error retrieving object versions: {e}")
-        return []
+    print(f"Incorrect object selected. Available objects: {available_objects}")
+    return []
 def delete_object(bucket, selected):
     """Deletes one object from """
     s3 = boto3.client('s3')
@@ -123,13 +117,11 @@ def delete_object(bucket, selected):
     if not available_objects:
         print("No files found in the bucket.")
         return
-    while True:
-        if selected in available_objects:
-            break
-        print("Incorrect object please select a valid one: ")
-        print(available_objects)
-    s3.delete_object(Bucket=bucket, key=selected)
-    return
+    if selected in available_objects:
+        s3.delete_object(Bucket=bucket, Key=selected)
+        print(f"Deleted {selected} from {bucket}.")
+    else:
+        print(f"Incorrect object selected. Available objects: {available_objects}")
 
 if __name__ == "__main__":
     CURRENT_BUCKET = None
