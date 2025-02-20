@@ -27,9 +27,6 @@ def test_upload_object():
 
 def test_delete_object():
     """Tests to see if objects are deleted properly"""
-    repo_root = os.getcwd()
-    file_path1 = os.path.join(repo_root, "hw03", "pytest_files", "dummyfile1.txt")
-    file_path2 = os.path.join(repo_root, "hw03", "pytest_files", "dummyfile2.txt")
     delete_object('hw03-ald21039-1', 'dummyfile2.txt')
     assert list_objects('hw03-ald21039-1') == ['dummyfile1.txt']
     delete_object('hw03-ald21039-1', 'dummyfile1.txt')
