@@ -15,12 +15,6 @@ def test_list_bucket_contents():
     assert list_objects('hw03-ald21039-2') == []
     assert list_objects('hw03-ald21039-3') == []
     assert list_objects('hw03-ald21039-1') == []
-    upload_file(file_path1,'hw03-ald21039-1')
-    assert list_objects('hw03-ald21039-1') == ['dummyfile1.txt']
-    upload_file(file_path2,'hw03-ald21039-2')
-    assert list_objects('hw03-ald21039-1') == ['dummyfile1.txt', 'dummyfile2.txt']
-    upload_file(file_path2, 'hw03-ald21039-2')
-    assert list_objects('hw03-ald21039-2') == ['dummyfile2.txt']
 
 def test_upload_object():
     """Tests to see if files are uploaded correctly"""
@@ -29,7 +23,7 @@ def test_upload_object():
     file_path2 = os.path.join(repo_root, "hw03", "pytest_files", "dummyfile2.txt")
     upload_file(file_path1,'hw03-ald21039-1')
     assert list_objects('hw03-ald21039-1') == ['dummyfile1.txt']
-    upload_file(file_path2,'hw03-ald21039-2')
+    upload_file(file_path2,'hw03-ald21039-1')
     assert list_objects('hw03-ald21039-1') == ['dummyfile1.txt', 'dummyfile2.txt']
     upload_file(file_path2, 'hw03-ald21039-2')
     assert list_objects('hw03-ald21039-2') == ['dummyfile2.txt']
