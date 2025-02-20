@@ -1,12 +1,12 @@
 """Does various commands for a s3 bucket that is prompted through command line"""
 import logging
+import os
 import boto3
 from botocore.exceptions import ClientError
-import os
 
 def select_bucket():
-    """Prompts the user to select a valid S3 bucket and returns the selection and the list of buckets."""
-    bucket_list = []
+    """Prompts the user to select a valid S3 bucket and the list of buckets."""
+    list_b = []
     s3 = boto3.client("s3")
     response = s3.list_buckets()
     bucket_names = {bucket["Name"] for bucket in response.get("Buckets", [])}
@@ -15,7 +15,7 @@ def select_bucket():
         return None
     print("Existing buckets:")
     for name in bucket_names:
-        bucket_list.append(name)
+        list_b.append(name)
         print(f"- {name}")
     while True:
         selected_bucket = input("Type the bucket you'd like to use: ").strip()
@@ -55,7 +55,7 @@ def download_file(bucket, file_path):
     available_objects = list_objects(bucket)
     if not available_objects:
         print("No files found in the bucket.")
-        return 
+        return
     while True:
         selected_object = input("Select a valid object:").strip()
         if selected_object in available_objects:
@@ -63,7 +63,7 @@ def download_file(bucket, file_path):
         print("Incorrect object please select a valid one: ")
         print(available_objects)
     s3.download_file(bucket, selected_object, file_path)
-    return 
+    return
 
 def pre_signed_url(bucket):
     """Generates a presigned url for a s3 object"""
@@ -72,7 +72,7 @@ def pre_signed_url(bucket):
     available_objects = list_objects(bucket)
     if not available_objects:
         print("No files found in the bucket.")
-        return 
+        return False
     while True:
         selected_object = input("Select a valid object:").strip()
         if selected_object in available_objects:
@@ -80,14 +80,13 @@ def pre_signed_url(bucket):
         print("Incorrect object please select a valid one: ")
         print(available_objects)
     try:
-        response = s3_client.generate_presigned_url('get_object', 
+        response = s3_client.generate_presigned_url('get_object',
                                                     Params={'Bucket': bucket,
                                                             'Key': selected_object},
                                                             ExpiresIn= expiration)
     except ClientError as e:
         logging.error(e)
         return None
-    
     return response
 
 def list_object_versions(bucket):
@@ -96,7 +95,7 @@ def list_object_versions(bucket):
     available_objects = list_objects(bucket)
     if not available_objects:
         print("No files found in the bucket.")
-        return 
+        return False
     while True:
         selected_object = input("Select a valid object:").strip()
         if selected_object in available_objects:
@@ -111,19 +110,18 @@ def list_object_versions(bucket):
             print("No version found")
             return []
 
-        return response["Versions"]  
+        return response["Versions"]
 
     except ClientError as e:
         print(f"Error retrieving object versions: {e}")
         return []
-    
 def delete_object(bucket):
     """Deletes one object from """
     s3 = boto3.client('s3')
     available_objects = list_objects(bucket)
     if not available_objects:
         print("No files found in the bucket.")
-        return 
+        return
     while True:
         selected_object = input("Select a valid object:").strip()
         if selected_object in available_objects:
@@ -134,7 +132,7 @@ def delete_object(bucket):
     return
 
 if __name__ == "__main__":
-    current_bucket = None  
+    CURRENT_BUCKET = None
 
     while True:
         menu_input = input(
@@ -148,52 +146,51 @@ if __name__ == "__main__":
                 break
 
             case "s":
-                current_bucket, bucket_list = select_bucket()
-                if current_bucket:
-                    print(f"Current bucket set to: {current_bucket}")
+                CURRENT_BUCKET, bucket_list = select_bucket()
+                if CURRENT_BUCKET:
+                    print(f"Current bucket set to: {CURRENT_BUCKET}")
 
             case "u":
-                if current_bucket is None:
+                if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
                 else:
-                    file_path = input("Enter the path to your file: ").strip()
-                    name_of_file = input("Enter a name for the file or press enter to skip: ").strip()
-                    upload_file(file_path, current_bucket, name_of_file)
+                    pathing = input("Enter the path to your file: ").strip()
+                    name_of_file = input("Enter a name for the file or enter to skip: ").strip()
+                    upload_file(pathing, CURRENT_BUCKET, name_of_file)
 
             case "lo":
-                if current_bucket is None:
+                if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
                 else:
-                    object_list = list_objects(current_bucket)
+                    object_list = list_objects(CURRENT_BUCKET)
                     print(object_list)
 
             case "d":
-                if current_bucket is None:
+                if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
                 else:
                     path_file = input("Enter the path to your file: ").strip()
-                    download_file(current_bucket, path_file)
+                    download_file(CURRENT_BUCKET, path_file)
 
             case "psu":
-                if current_bucket is None:
+                if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
-                else: 
-                    url = pre_signed_url(current_bucket)
+                else:
+                    url = pre_signed_url(CURRENT_BUCKET)
                     print(f"Your url is: {url}")
 
             case "v":
-                if current_bucket is None:
+                if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
-                else: 
-                    version_info = list_object_versions(current_bucket)
+                else:
+                    version_info = list_object_versions(CURRENT_BUCKET)
                     print(version_info)
 
             case "del":
-                if current_bucket is None:
+                if CURRENT_BUCKET is None:
                     print("No bucket selected, please select a bucket.")
-                else: 
-                    delete_object(current_bucket)
+                else:
+                    delete_object(CURRENT_BUCKET)
 
-            case _:  
+            case _:
                 print("Invalid option, please try again.")
-
