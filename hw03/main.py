@@ -15,7 +15,7 @@ def bucket_listing():
     print("Existing buckets:")
     for name in bucket_names:
         print(f"- {name}")
-    return None
+    return bucket_names
 
 def select_bucket(bucket_selected):
     """Prompts the user to select a valid S3 bucket and the list of buckets."""
