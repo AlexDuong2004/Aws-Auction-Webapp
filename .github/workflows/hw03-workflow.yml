@@ -1,0 +1,80 @@
+# Trigger deployment only on push to main branch
+on:
+  push:
+    branches:
+      # TODO: Set this to "main" or "master" or whatever your main branch is called
+      - main
+      - feature-hw03
+    paths:
+      - hw03/**
+
+jobs:
+  test:
+    name: Test S3 bucket commands via AWS CLI
+    # Your repo MUST be in a UConn GitHub Organization that has been configured with RH Runners. 
+    # This is a manual task that needs to be completed by the UConn School of Business IT staff.
+    # The runs-on value must be "self-hosted" to leverage the runner.
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        #TODO: Select whichever python versions you want to test with
+        #python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8"]
+
+    steps:
+      # This step pulls the code from your repo and downloads it into the 
+      #   Docker container running this CICD pipeline
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pylint dependencies
+        ############################
+        # pylint
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+      - name: Analysing the code with pylint
+        #TODO: Be sure to update the path below to match the folder structure in your repo
+        run: |
+          pylint $(git ls-files 'hw03/*.py')
+
+      # Uncomment this section if you need to use AWS CLI commands in your pipeline
+      # - name: Install AWS CLI
+      #   ############################
+      #   # AWS CLI install
+      #   run: |
+      #     sudo apt-get install -y libxml2-utils
+      #     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #     unzip awscliv2.zip
+      #     sudo ./aws/install
+
+      # Use the section below if you need to deploy to AWS
+      #TODO: create the 3 secrets in your UConn github repo that you see listed below 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+          role-session-name: MySessionName
+
+      - name: Install pytest dependencies
+        ############################
+        # pytest - runs all pytests in your downloaded repo. Place your dependencies
+        #   into the requirements.txt file
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      #TODO: update your path below to match the folder that contains your unit tests
+      #      Note: The path is relative to the root of your repo and is case sensitive
+      - name: Run all your pytest tests in your code
+        run: |
+          pytest hw03/test_main.py
