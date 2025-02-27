@@ -18,7 +18,7 @@ def upload_file(file_name, bucket, object_name=None):
     return True
 
 def dynamo_value(file_name):
-    """Retrieves an item from DynamoDB using file_key."""
+    """Retrieves an item from DynamoDB using the file."""
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table("hw04-ald21039-1")
     response = table.get_item(Key={"file_name": file_name})
