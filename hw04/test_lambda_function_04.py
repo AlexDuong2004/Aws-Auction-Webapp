@@ -44,11 +44,11 @@ def test_lambda_function():
 def test_lambda_function_2():
     """Tests the second dummy file to make sure it works"""
     repo_root = os.getcwd()
-    file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile2.txt')
+    file_path2 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile2.txt')
     invalid_query = dynamo_value('dummyfile2.txt')
     assert invalid_query is None
-    upload_file(file_path1, 'hw04-ald21039-1')
-    time.sleep(5)
+    upload_file(file_path2, 'hw04-ald21039-1')
+    time.sleep(5) 
     valid_query = dynamo_value('dummyfile2.txt')
     assert valid_query is not None
     assert valid_query["file_name"] == 'dummyfile2.txt'
