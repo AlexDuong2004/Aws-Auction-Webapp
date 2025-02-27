@@ -1,0 +1,1 @@
+"""Testing the lambda function with Dynamo DB"""
