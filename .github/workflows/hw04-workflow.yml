@@ -25,6 +25,14 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.13'
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
 
       - name: Install pytest dependencies
         run: |
@@ -56,4 +64,4 @@ jobs:
         run: zip -j hw04-code.zip ./hw04/lambda_function_04.py
 
       - name: Deploy python code to lambda
-        run: aws lambda update-function-code --function-name hw04-s3-trigger --zip-file fileb://hw04-code.zip
+        run: aws lambda update-function-code --function-name hw04-ald21039-1 --zip-file fileb://hw04-code.zip
