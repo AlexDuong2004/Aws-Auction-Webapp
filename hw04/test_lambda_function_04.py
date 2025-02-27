@@ -1,1 +1,59 @@
 """Testing the lambda function with Dynamo DB"""
+import time
+import logging
+import os
+import boto3
+import pytest
+from botocore.exceptions import ClientError
+
+def upload_file(file_name, bucket, object_name=None):
+    """Upload a file to an S3 bucket from hw03."""
+    if object_name is None:
+        object_name = os.path.basename(file_name)
+    s3_client = boto3.client('s3')
+    try:
+        s3_client.upload_file(file_name, bucket, object_name)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return True
+
+def dynamo_value(file_name):
+    """Retrieves an item from DynamoDB using file_key."""
+    dynamodb = boto3.resource("dynamodb")
+    table = dynamodb.Table("hw04-ald21039-1")
+    response = table.get_item(Key={"file_name": file_name})
+    return response.get("Item")
+
+
+def test_lambda_function():
+    repo_root = os.getcwd()
+    file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile1.txt')
+    invalid_query = dynamo_value('dummyfile1.txt')
+    assert invalid_query is None
+    upload_file(file_path1, 'dummyfile1.txt')
+    time.sleep(5)
+    valid_query = dynamo_value('dummyfile1.txt')
+    assert valid_query is not None
+    assert valid_query["file_name"] == 'dummyfile1.txt'
+    assert 'upload_time' in valid_query
+    assert 'file_etag' in valid_query 
+    assert 'file_size' in valid_query
+    assert 'bucket_arn' == 'arn:aws:s3:::hw04-ald21039-1'
+
+def test_lambda_function_2():
+    repo_root = os.getcwd()
+    file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile2.txt')
+    invalid_query = dynamo_value('dummyfile2.txt')
+    assert invalid_query is None
+    upload_file(file_path1, 'dummyfile2.txt')
+    time.sleep(5)
+    valid_query = dynamo_value('dummyfile2.txt')
+    assert valid_query is not None
+    assert valid_query["file_name"] == 'dummyfile2.txt'
+    assert 'upload_time' in valid_query
+    assert 'file_etag' in valid_query 
+    assert 'file_size' in valid_query
+    assert 'bucket_arn' == 'arn:aws:s3:::hw04-ald21039-1'
+
+
