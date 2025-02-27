@@ -1,4 +1,4 @@
-"""Testing the lambda function with Dynamo DB"""
+"""Testing the lambda function with DynamoDB"""
 import time
 import logging
 import os
