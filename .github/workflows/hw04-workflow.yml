@@ -16,6 +16,11 @@ jobs:
     # This is a manual task that needs to be completed by the UConn School of Business IT staff.
     # The runs-on value must be "self-hosted" to leverage the runner .
     runs-on: self-hosted
+    env:
+      AWS_REGION: us-east-1
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
     steps:
       - name: Checkout the files
