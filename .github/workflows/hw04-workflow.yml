@@ -64,4 +64,4 @@ jobs:
         run: zip -j hw04-code.zip ./hw04/lambda_function_04.py
 
       - name: Deploy python code to lambda
-        run: aws lambda update-function-code --function-name hw04-s3-trigger --zip-file fileb://hw04-code.zip
+        run: aws lambda update-function-code --function-name hw04-ald21039-1 --zip-file fileb://hw04-code.zip
