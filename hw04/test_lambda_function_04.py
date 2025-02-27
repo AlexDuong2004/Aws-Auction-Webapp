@@ -27,6 +27,7 @@ def dynamo_value(file_name):
 
 
 def test_lambda_function():
+    """Tests the first dummy file"""
     repo_root = os.getcwd()
     file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile1.txt')
     invalid_query = dynamo_value('dummyfile1.txt')
@@ -42,6 +43,7 @@ def test_lambda_function():
     assert 'bucket_arn' == 'arn:aws:s3:::hw04-ald21039-1'
 
 def test_lambda_function_2():
+    """Tests the second dummy file"""
     repo_root = os.getcwd()
     file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile2.txt')
     invalid_query = dynamo_value('dummyfile2.txt')
