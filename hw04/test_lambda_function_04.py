@@ -31,7 +31,7 @@ def test_lambda_function():
     file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile1.txt')
     invalid_query = dynamo_value('dummyfile1.txt')
     assert invalid_query is None
-    upload_file(file_path1, 'dummyfile1.txt')
+    upload_file(file_path1, 'hw04-ald21039-1')
     time.sleep(5)
     valid_query = dynamo_value('dummyfile1.txt')
     assert valid_query is not None
@@ -47,7 +47,7 @@ def test_lambda_function_2():
     file_path1 = os.path.join(repo_root, 'hw04', 'pytest_files', 'dummyfile2.txt')
     invalid_query = dynamo_value('dummyfile2.txt')
     assert invalid_query is None
-    upload_file(file_path1, 'dummyfile2.txt')
+    upload_file(file_path1, 'hw04-ald21039-1')
     time.sleep(5)
     valid_query = dynamo_value('dummyfile2.txt')
     assert valid_query is not None
