@@ -39,7 +39,7 @@ def test_lambda_function():
     assert 'upload_time' in valid_query
     assert 'file_etag' in valid_query 
     assert 'file_size' in valid_query
-    assert 'bucket_arn' == 'arn:aws:s3:::hw04-ald21039-1'
+    assert valid_query['bucket_arn'] == 'arn:aws:s3:::hw04-ald21039-1'
 
 def test_lambda_function_2():
     """Tests the second dummy file"""
@@ -55,6 +55,6 @@ def test_lambda_function_2():
     assert 'upload_time' in valid_query
     assert 'file_etag' in valid_query 
     assert 'file_size' in valid_query
-    assert 'bucket_arn' == 'arn:aws:s3:::hw04-ald21039-1'
+    assert valid_query['bucket_arn'] == 'arn:aws:s3:::hw04-ald21039-1'
 
 
