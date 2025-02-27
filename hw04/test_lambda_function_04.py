@@ -32,7 +32,7 @@ def test_lambda_function():
     invalid_query = dynamo_value('dummyfile1.txt')
     assert invalid_query is None
     upload_file(file_path1, 'hw04-ald21039-1')
-    time.sleep(5)
+    time.sleep(15)
     valid_query = dynamo_value('dummyfile1.txt')
     assert valid_query is not None
     assert valid_query["file_name"] == 'dummyfile1.txt'
@@ -48,7 +48,7 @@ def test_lambda_function_2():
     invalid_query = dynamo_value('dummyfile2.txt')
     assert invalid_query is None
     upload_file(file_path2, 'hw04-ald21039-1')
-    time.sleep(5) 
+    time.sleep(15) 
     valid_query = dynamo_value('dummyfile2.txt')
     assert valid_query is not None
     assert valid_query["file_name"] == 'dummyfile2.txt'
