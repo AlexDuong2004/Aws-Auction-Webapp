@@ -7,7 +7,7 @@ print('Loading function')
 
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table("hw04-ald21039")
+table = dynamodb.Table("hw04-ald21039-1")
 
 
 def lambda_handler(event, context):
