@@ -39,7 +39,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
       - name: Run all your pytest tests
         run: pytest hw04/test_lambda_function_04.py  
 
@@ -61,7 +60,8 @@ jobs:
           aws-region: us-east-1
 
       - name: Zip python code
-        run: zip -j hw04-code.zip ./hw04/lambda_function_hw04.py
+        run: zip -j hw04-code.zip ./hw04/lambda_function_04.py
 
       - name: Deploy python code to lambda
         run: aws lambda update-function-code --function-name hw04-ald21039-1 --zip-file fileb://hw04-code.zip
+
