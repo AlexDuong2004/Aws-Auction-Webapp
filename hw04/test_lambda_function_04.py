@@ -3,7 +3,6 @@ import time
 import logging
 import os
 import boto3
-import pytest
 from botocore.exceptions import ClientError
 
 def upload_file(file_name, bucket, object_name=None):
