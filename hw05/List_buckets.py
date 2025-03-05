@@ -3,7 +3,7 @@ import boto3
 
 print("Loading Function In")
 
-def my_function2(event, context):
+def my_function1(event, context):
     # TODO implement
     print(event)
     client = boto3.client("s3")
