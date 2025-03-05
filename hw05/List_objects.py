@@ -10,7 +10,7 @@ def my_function2(event, context):
     query = s3.list_objects_v2(Bucket=bucket_name)
     objects = query.get("Contents", [])
     object_keys = [obj["Key"] for obj in objects] if objects else []
-
+    print(f"bucket name: {bucket_name}, objects: {object_keys}")
     return {
         'statusCode': 200,
         'body': json.dumps({"Objects": object_keys})
