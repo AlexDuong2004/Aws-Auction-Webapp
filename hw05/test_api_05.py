@@ -33,7 +33,7 @@ def test_list_objects():
     assert response_4.json().get("Objects", []) == []
 
 def test_upload_and_delete():
-    """Uploads an object to a selected bucket and properly deletes it and makes sure of it"""
+    """Uploads an object to a selected bucket and properly deletes it"""
     repo_root = os.getcwd()
     file_path1 = os.path.join(repo_root, "hw05", "pytest_files", "dummy1.txt")
     url_2 = "https://rws5qyu8l9.execute-api.us-east-1.amazonaws.com/dev/hw05-ald21039-1"
