@@ -42,12 +42,14 @@ def test_upload_and_delete():
     assert response_2.json().get("Objects", []) == []
     object_name = "dummy1"
     with open(file_path1, 'rb') as file:
-        files = {
-            'file': (object_name, file, 'text/plain'), 
-        }
-        data = {
-            'object_name': object_name,  
-        }
+        file_data = file.read()  # Read file contents into memory
+
+    files = {
+        'file': (object_name, file_data, 'text/plain'),
+    }
+    data = {
+        'object_name': object_name,
+    }
     
     response_3 = requests.post(url_2, files=files, data=data)
     assert response_3.status_code == 201
