@@ -1,3 +1,4 @@
+"""Tests for hw05"""
 import requests
 import os
 from requests_toolbelt import MultipartEncoder
