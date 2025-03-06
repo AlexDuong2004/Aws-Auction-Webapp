@@ -1,5 +1,6 @@
 import requests
-import boto3
+import os
+from http_utils import read_file_into_base64_string
 
 
 def test_list_buckets():
@@ -30,4 +31,38 @@ def test_list_objects():
     response_4 = requests.get(url_4)
     assert response_4.status_code == 200
     assert response_4.json().get("Objects", []) == []
+
+def test_upload_and_delete():
+    """Uploads an object to a selected bucket and properly deletes it"""
+    repo_root = os.getcwd()
+    file_path1 = os.path.join(repo_root, "hw05", "pytest_files", "dummy1.txt")
+    url_2 = "https://rws5qyu8l9.execute-api.us-east-1.amazonaws.com/dev/hw05-ald21039-1"
+    response_2 = requests.get(url_2)
+    assert response_2.status_code == 200
+    assert response_2.json().get("Objects", []) == []
+    object_name = "dummy1"
+    with open(file_path1, 'rb') as file:
+        files = {
+            'file': (object_name, file, 'text/plain'), 
+        }
+        data = {
+            'object_name': object_name,  
+        }
+    
+    response_3 = requests.post(url_2, files=files, data=data)
+    assert response_3.status_code == 201
+    uploaded_object = response_3.json().get("file_name")
+    assert uploaded_object == object_name
+    response_4 = requests.get(url_2)
+    assert response_4.status_code == 200
+    assert response_4.json().get("Objects", []) == ["dummy1"]
+    url_5 = "https://rws5qyu8l9.execute-api.us-east-1.amazonaws.com/dev/hw05-ald21039-1/dummyfile1"
+    response_5 = requests.delete(url_5)
+    assert response_5.status_code == 200
+    response_6 = requests.get(url_2)
+    assert response_6.status_code == 200
+    assert response_6.json().get("Objects", []) == []
+
+
+
 
