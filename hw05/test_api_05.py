@@ -42,19 +42,16 @@ def test_upload_and_delete():
     assert response_2.json().get("Objects", []) == []
     object_name = "dummy1"
     
-    # Open the file and prepare the multipart form data
     with open(file_path1, 'rb') as file:
         file_data = file.read()
 
-    # Create MultipartEncoder with file data and additional form fields
     m = MultipartEncoder(
         fields={
-            'file': (object_name, file_data, 'text/plain'),  # File to upload
-            'object_name': object_name                      # Additional field for object name
+            'file': (object_name, file_data, 'text/plain'),  
+            'object_name': object_name                      
         }
     )
 
-    # Send the POST request to upload the file
     response_3 = requests.post(url_2, data=m, headers={'Content-Type': m.content_type})
 
     assert response_3.status_code == 201
