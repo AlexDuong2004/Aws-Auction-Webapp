@@ -60,7 +60,7 @@ def test_upload_and_delete():
     response_4 = requests.get(url_2)
     assert response_4.status_code == 200
     assert response_4.json().get("Objects", []) == ["dummy1"]
-    url_5 = "https://rws5qyu8l9.execute-api.us-east-1.amazonaws.com/dev/hw05-ald21039-1/dummyfile1"
+    url_5 = "https://rws5qyu8l9.execute-api.us-east-1.amazonaws.com/dev/hw05-ald21039-1/dummy1"
     response_5 = requests.delete(url_5)
     assert response_5.status_code == 200
     response_6 = requests.get(url_2)
