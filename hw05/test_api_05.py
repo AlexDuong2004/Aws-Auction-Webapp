@@ -1,6 +1,6 @@
 import requests
 import os
-from multipart import MultipartEncoder
+from python_multipart import MultipartEncoder
 
 
 def test_list_buckets():
