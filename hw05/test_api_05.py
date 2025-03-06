@@ -1,6 +1,6 @@
 import requests
 import os
-from http_utils import read_file_into_base64_string
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 
 def test_list_buckets():
@@ -42,16 +42,16 @@ def test_upload_and_delete():
     assert response_2.json().get("Objects", []) == []
     object_name = "dummy1"
     with open(file_path1, 'rb') as file:
-        file_data = file.read()  # Read file contents into memory
+        file_data = file.read()  
 
-    files = {
-        'file': (object_name, file_data, 'text/plain'),
-    }
-    data = {
-        'object_name': object_name,
-    }
-    
-    response_3 = requests.post(url_2, files=files, data=data)
+    m = MultipartEncoder(
+        fields={
+            'file': (object_name, file_data, 'text/plain'),
+            'object_name': object_name
+        }
+    )
+
+    response_3 = requests.post(url_2, data=m, headers={'Content-Type': m.content_type})
     assert response_3.status_code == 201
     uploaded_object = response_3.json().get("file_name")
     assert uploaded_object == object_name
