@@ -47,7 +47,7 @@ def test_upload_and_delete():
 
     m = MultipartEncoder(
         fields={
-            'file': (object_name, file_data, 'text/plain'),  
+            'file': ('dummy1.txt', file_data, 'text/plain'),  
             'object_name': object_name                      
         }
     )
