@@ -17,14 +17,18 @@ def list_objects(bucket_name):
     if "Contents" not in query:
             return []
     objects = query.get("Contents", [])
-    object_keys = [obj["Key"] for obj in objects] if objects else []
+    object_keys = []
+    if objects == None:
+        return object_keys
+    for obj in objects:
+         object_keys.append(obj)
     return object_keys
 
 def upload_file_to_s3(file, bucket_name):
     '''Uploads a file to S3'''
     s3 = create_client()
     # TODO: Upload the file to the given bucket_name
-    s3.upload_file(file, bucket_name)
+    s3.upload_fileobj(file, bucket_name, "test")
     return
 
 
