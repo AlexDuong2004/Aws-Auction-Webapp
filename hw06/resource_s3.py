@@ -24,7 +24,7 @@ def upload_file_to_s3(file, bucket_name):
     '''Uploads a file to S3'''
     s3 = create_client()
     # TODO: Upload the file to the given bucket_name
-    s3.upload_file(file, bucket_name, "placeholder")
+    s3.upload_file(file, bucket_name)
     return
 
 

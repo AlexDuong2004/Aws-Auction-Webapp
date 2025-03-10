@@ -29,6 +29,7 @@ def configure_routes(app):
             return list_files()
         return "Operation not supported"
     
-
+configure_routes(app)
 if __name__ == '__main__':
-    app.run(debug=True)
+    configure_routes(app)
+    app.run(host="0.0.0.0", port=5000)
