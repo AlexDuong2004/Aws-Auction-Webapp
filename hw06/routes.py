@@ -1,9 +1,11 @@
 '''API Routes'''
-from flask import request, render_template
+from flask import request, render_template, Flask
 import resource_s3
 
 # TODO: Replace with your bucket name
 BUCKET_NAME = "hw06-ald21039-1"
+app = Flask(__name__)
+
 
 def configure_routes(app):
     '''Setup all the API routes'''
@@ -26,3 +28,7 @@ def configure_routes(app):
             resource_s3.upload_file_to_s3(file, BUCKET_NAME)
             return list_files()
         return "Operation not supported"
+    
+
+if __name__ == '__main__':
+    app.run(debug=True)
