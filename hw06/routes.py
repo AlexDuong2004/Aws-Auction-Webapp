@@ -1,5 +1,5 @@
 '''API Routes'''
-from flask import request, render_template, Flask
+from flask import request, render_template, Flask, Response, jsonify
 import resource_s3
 
 # TODO: Replace with your bucket name
@@ -28,6 +28,20 @@ def configure_routes(app):
             resource_s3.upload_file_to_s3(file, BUCKET_NAME)
             return list_files()
         return "Operation not supported"
+    
+    @app.route('/get_thumbnail')
+    def get_thumbnail():
+        '''Returns the thumb_nail'''
+        obj_key = request.args.get('obj')
+    
+        if not obj_key:
+            return jsonify({'error': 'Missing object key'}), 400
+        thumbnail = resource_s3.generate_thumbnail(BUCKET_NAME, obj_key)
+    
+        if thumbnail:
+            return Response(thumbnail, content_type='image/jpeg')  # Change content type if needed
+        else:
+            return jsonify({'error': 'Object not found'}), 404
     
 configure_routes(app)
 if __name__ == '__main__':
