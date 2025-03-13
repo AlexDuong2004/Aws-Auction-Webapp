@@ -1,4 +1,4 @@
-'''API Routes for web app'''
+'''API Routes'''
 from flask import request, render_template, Flask, Response, jsonify
 import resource_s3
 
