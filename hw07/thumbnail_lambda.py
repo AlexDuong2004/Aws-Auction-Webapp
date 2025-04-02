@@ -19,6 +19,7 @@ def resize_image(image_path, resized_path):
         print(f"Base64 Thumbnail Preview: {encoded_string[:200]}... (truncated)")
             
 def thumbnail_generator(event, context):
+  """Generates the thumbnail"""
   for record in event['Records']:
     bucket = record['s3']['bucket']['name']
     key = unquote_plus(record['s3']['object']['key'])

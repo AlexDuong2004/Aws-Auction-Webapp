@@ -40,7 +40,7 @@ jobs:
         run: aws lambda update-function-code --function-name=hw07-ald21039-image-metadata --zip-file=fileb://hw07-metadata_lambda.zip
 
       - name: Zip thumbnail code
-        run: zip -r hw07-thumbnail_lambda.zip hw07/thumbnail_lambda.py hw07/packages
-
+        run: cd hw07 && zip -r ../hw07-thumbnail_lambda.zip thumbnail_lambda.py packages
+        
       - name: Deploy thumbnail to lambda
-        run: aws lambda update-function-code --function-name=hw07-ald21039-image-metadata --zip-file=fileb://hw07-thumbnail_lambda.zip
+        run: aws lambda update-function-code --function-name=hw07-ald21039-thumbnail-generator --zip-file=fileb://hw07-thumbnail_lambda.zip
