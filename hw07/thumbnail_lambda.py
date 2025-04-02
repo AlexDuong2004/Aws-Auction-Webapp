@@ -10,6 +10,7 @@ import base64
 s3_client = boto3.client('s3')
             
 def resize_image(image_path, resized_path):
+  """Halves the thumnail size"""
   with Image.open(image_path) as image:
     image.thumbnail(tuple(x / 2 for x in image.size))
     image.save(resized_path)
