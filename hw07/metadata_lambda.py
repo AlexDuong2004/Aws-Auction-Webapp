@@ -5,6 +5,7 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table("hw07-ald21039-image-metadata")
 
 def metadata_generator(event, context):
+    """Creates the metadata"""
     # TODO implement
     print(event)
     record = event.get("Records", [])[0]
