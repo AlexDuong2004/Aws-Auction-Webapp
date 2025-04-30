@@ -1,0 +1,35 @@
+import json
+import boto3
+
+s3 = boto3.client('s3')
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table("HW09-Users")
+
+def post_user_handler(event, context):
+    #Testing purposes
+    print(event)
+    body = json.loads(event['body'])
+
+    user_id = body['userId']
+    name = body['name']
+    acctBalance = body['acctBalance']
+
+    try:
+        database_info = {
+            "userId": user_id,
+            "name": name,
+            "acctBalance": acctBalance
+        }
+        print(database_info)
+        table.put_item(Item=database_info)
+        return {
+            "statusCode": 201,
+            "body": json.dumps({"message": "User created", "data": database_info})
+        }
+    except Exception as e:
+        print(e)
+        print("An error has occured")
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"error": str(e)})
+        }
