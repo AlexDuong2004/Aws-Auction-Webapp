@@ -9,11 +9,10 @@ table = dynamodb.Table("HW09-Users")
 def post_user_handler(event, context):
     #Testing purposes
     print(event)
-    body = json.loads(event['body'])
+    user_id = event['userId']
+    name = event['name']
+    acctBalance = event['acctBalance']
 
-    user_id = body['userId']
-    name = body['name']
-    acctBalance = body['acctBalance']
 
     try:
         database_info = {
