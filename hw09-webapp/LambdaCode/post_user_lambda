@@ -7,6 +7,12 @@ s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table("HW09-Users")
 
+def convert_decimals(obj):
+    for key, value in obj.items():
+        if isinstance(value, decimal.Decimal):
+            obj[key] = float(value)
+    return obj
+
 def post_user_handler(event, context):
     #Testing purposes
     print(event)
@@ -21,11 +27,11 @@ def post_user_handler(event, context):
             "name": name,
             "acctBalance": acctBalance
         }
-        print(database_info)
+        print(convert_decimals(database_info))
         table.put_item(Item=database_info)
         return {
             "statusCode": 201,
-            "body": json.dumps({"message": "User created", "data": database_info})
+            "body": json.dumps({"message": "User created", "data": convert_decimals(database_info)})
         }
     except Exception as e:
         print(e)
