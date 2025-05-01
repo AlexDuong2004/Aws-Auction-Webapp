@@ -17,6 +17,7 @@ def decimal_to_float(item):
 
 def get_user_handler(event, context):
     user_id = event.get('userId') 
+    print(user_id)
 
     try:
         if user_id:

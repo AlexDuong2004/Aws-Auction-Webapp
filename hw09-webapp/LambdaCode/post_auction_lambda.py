@@ -15,12 +15,12 @@ def convert_decimals(obj):
 
 def post_auction_handler(event, context):
     try:
-        auctionId = event["auctionId"]
-        item_name = event["itemName"]
-        reserve = decimal.Decimal(str(event["reserve"]))   
-        description = event["description"]
-        status = event["status"]
-        winningUserId = event["winningUserId"]
+        auctionId = event['body-json'].get("auctionId")
+        item_name = event['body-json'].get("itemName")
+        reserve = decimal.Decimal(str(event['body-json'].get("reserve"))) 
+        description = event['body-json'].get("description")
+        status = event['body-json'].get("status")
+        winningUserId = event['body-json'].get("winningUserId")
 
         item = {
             "auctionId": auctionId,
@@ -30,8 +30,8 @@ def post_auction_handler(event, context):
             "status": status,
             "winningUserId": winningUserId
         }
-        print(convert_decimals(item))
         table.put_item(Item=item)
+        print(convert_decimals(item))
 
         return {
             "statusCode": 201,

@@ -16,9 +16,12 @@ def convert_decimals(obj):
 def post_user_handler(event, context):
     #Testing purposes
     print(event)
-    user_id = event['userId']
-    name = event['name']
-    acctBalance = decimal.Decimal(str(event['acctBalance']))
+    user_id = event['body-json'].get('userId')
+    print(f"id: {user_id}")
+    name = event['body-json'].get('name')
+    print(f"name: {name}")
+    acctBalance = decimal.Decimal(str(event['body-json'].get('acctBalance')))
+    #print(f"acctBalance: {acctBalance}")
 
 
     try:
@@ -27,8 +30,8 @@ def post_user_handler(event, context):
             "name": name,
             "acctBalance": acctBalance
         }
-        print(convert_decimals(database_info))
         table.put_item(Item=database_info)
+        print(convert_decimals(database_info))
         return {
             "statusCode": 201,
             "body": json.dumps({"message": "User created", "data": convert_decimals(database_info)})
