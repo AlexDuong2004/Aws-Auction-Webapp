@@ -1,15 +1,15 @@
 # Serverless Auction Platform (AWS + React)
 
-A full-stack, serverless online auction application. Users can register, create auctions, and place bids in real time — built entirely on AWS managed services with a React/TypeScript frontend and an automated CI/CD pipeline.
+A full-stack, serverless online auction application. Users can register, create auctions, and place bids in real time built entirely on AWS managed services with a React/TypeScript frontend.
 
 ## Overview
 
-This project demonstrates an end-to-end serverless architecture: a static React SPA calls a REST API backed by AWS Lambda functions, which read and write to DynamoDB. Infrastructure is deployed via GitHub Actions, with no servers to manage.
+This project demonstrates an end-to-end serverless architecture: a static React SPA calls a REST API backed by AWS Lambda functions, which read and write to DynamoDB.
 
 **Core flows:**
-- **Users** — create accounts and set an account balance
-- **Auctions** — list open auctions and create new items with a reserve price
-- **Bidding** — select an auction, place bids against it, and view the live bid history
+- **Users** — create accounts for users and sets an account's balance
+- **Auctions** — list open auctions and create new items that may have a reserve price
+- **Bidding** — select an auction, you have the ability to place bids against it, and capability to view the live bid history
 
 ## Architecture
 
@@ -49,7 +49,7 @@ cd AWSAuctionApp
 npm install
 ```
 
-Create a `.env` file in `AWSAuctionApp/` pointing at your API Gateway stage:
+Create a `.env` file in `AWSAuctionApp/` pointing at the API Gateway stage:
 ```
 VITE_REACT_APP_API_BASE=https://<your-api-id>.execute-api.us-east-1.amazonaws.com/prod
 ```
@@ -66,7 +66,7 @@ npm run build    # production build -> dist/
 4. Browse to the bucket's website endpoint.
 
 ### Backend Setup
-Each Lambda function expects a corresponding DynamoDB table (`Users`, `Auctions`, `Bids`) and is wired to API Gateway routes for `GET`/`POST` on `/users`, `/auctions`, and `/bids`. Lambda source lives in `AWSAuctionApp/LambdaCode/`.
+Each Lambda function expects a corresponding DynamoDB table (`Users`, `Auctions`, `Bids`) and is wired to the API Gateway routes for `GET`/`POST` on `/users`, `/auctions`, and `/bids`. Lambda source lives in `AWSAuctionApp/LambdaCode/`.
 
 ## Project Structure
 ```
