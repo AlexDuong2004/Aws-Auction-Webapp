@@ -49,7 +49,7 @@ cd AWSAuctionApp
 npm install
 ```
 
-Create a `.env` file in `hw09-webapp/` pointing at your API Gateway stage:
+Create a `.env` file in `AWSAuctionApp/` pointing at your API Gateway stage:
 ```
 VITE_REACT_APP_API_BASE=https://<your-api-id>.execute-api.us-east-1.amazonaws.com/prod
 ```
