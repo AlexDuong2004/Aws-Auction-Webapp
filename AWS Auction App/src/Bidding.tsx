@@ -65,6 +65,7 @@ const Bidding: React.FC = () => {
           setBidsError('No bids placed yet.');
           setBids([]); // Make sure bids is an empty array if no bids are found
         } else {
+          console.log("hello", bidData)
           setBids(bidData); // Set bids if data is valid
         }
       } else {
