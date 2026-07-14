@@ -45,7 +45,7 @@ React SPA (S3 static hosting)
 
 ### Local Development
 ```bash
-cd hw09-webapp
+cd AWSAuctionApp
 npm install
 ```
 
@@ -66,7 +66,7 @@ npm run build    # production build -> dist/
 4. Browse to the bucket's website endpoint.
 
 ### Backend Setup
-Each Lambda function expects a corresponding DynamoDB table (`Users`, `Auctions`, `Bids`) and is wired to API Gateway routes for `GET`/`POST` on `/users`, `/auctions`, and `/bids`. Lambda source lives in `hw09-webapp/LambdaCode/`.
+Each Lambda function expects a corresponding DynamoDB table (`Users`, `Auctions`, `Bids`) and is wired to API Gateway routes for `GET`/`POST` on `/users`, `/auctions`, and `/bids`. Lambda source lives in `AWSAuctionApp/LambdaCode/`.
 
 ## CI/CD
 
@@ -74,7 +74,7 @@ GitHub Actions workflows in `.github/workflows/` automatically zip and deploy ea
 
 ## Project Structure
 ```
-hw09-webapp/
+AWSAuctionApp/
 ├── src/
 │   ├── App.tsx        # routes: /users, /auctions, /bidding/:auctionId
 │   ├── Users.tsx
