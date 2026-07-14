@@ -68,10 +68,6 @@ npm run build    # production build -> dist/
 ### Backend Setup
 Each Lambda function expects a corresponding DynamoDB table (`Users`, `Auctions`, `Bids`) and is wired to API Gateway routes for `GET`/`POST` on `/users`, `/auctions`, and `/bids`. Lambda source lives in `AWSAuctionApp/LambdaCode/`.
 
-## CI/CD
-
-GitHub Actions workflows in `.github/workflows/` automatically zip and deploy each Lambda function to AWS on push, using `aws lambda update-function-code`, with credentials injected via repository secrets and jobs running on self-hosted runners.
-
 ## Project Structure
 ```
 AWSAuctionApp/
@@ -85,5 +81,4 @@ AWSAuctionApp/
 │   ├── get_auction_lambda.py / post_auction_lambda.py
 │   └── get_bid_lambda.py
 └── package.json
-.github/workflows/       # per-feature CI/CD pipelines
 ```
